@@ -14,8 +14,8 @@ export default function Guildhall() {
         Guildhall
       </h1>
       <Grid container spacing={2}>
-        {guildhall.map((card) => (
-          <Grid item xs={6}>
+        {guildhall.map((card, index) => (
+          <Grid key={index} item xs={6}>
             <Paper className="p-4">
               <p className="title-font" style={{ fontSize: "1.5rem" }}>
                 {card.name}
@@ -67,7 +67,7 @@ function GuildhallCardSelectionModal(props: GuildhallCardSelectionModalProps) {
             {Object.values(GuildhallCards).map((x: any) => {
               const card = x as GuildhallCard;
               return (
-                <ListItemButton onClick={() => selectCard(card)}>
+                <ListItemButton key={x.type} onClick={() => selectCard(card)}>
                   <ListItemText primary={card.name} secondary={card.text} />
                 </ListItemButton>
               );
