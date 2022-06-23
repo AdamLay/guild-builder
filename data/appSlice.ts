@@ -11,6 +11,7 @@ export interface AppState {
   activeFactions: Faction[];
   modelCards: ModelCard[];
   guildhall: GuildhallCard[];
+  selectedModelCards: ModelCard[];
 }
 
 const initialState: AppState = {
@@ -18,7 +19,8 @@ const initialState: AppState = {
   loadingFactions: true,
   activeFactions: [],
   modelCards: [],
-  guildhall: [GuildhallCards[GuildhallCardType.GreatHall]],
+  guildhall: [{ ...GuildhallCards[GuildhallCardType.GreatHall], selectionId: nanoid() }],
+  selectedModelCards: [],
 };
 
 export const getFactions = createAsyncThunk("app/getFactions", async () => {
@@ -40,12 +42,24 @@ export const appSlice = createSlice({
     selectFaction(state, action: PayloadAction<Faction>) {
       state.activeFactions.push(action.payload);
     },
+
     addGuildhallCard(state, action: PayloadAction<GuildhallCard>) {
       state.guildhall.push({ ...action.payload, selectionId: nanoid() });
     },
     removeGuildhallCard(state, action: PayloadAction<string>) {
       const removeAt = state.guildhall.findIndex((x) => x.selectionId === action.payload);
       state.guildhall.splice(removeAt, 1);
+    },
+
+    selectModelCard(state, action: PayloadAction<ModelCard>) {
+      state.selectedModelCards.push({
+        ...action.payload,
+        selectionId: nanoid(),
+      });
+    },
+    removeModelCard(state, action: PayloadAction<string>) {
+      const removeAt = state.selectedModelCards.findIndex((x) => x.selectionId === action.payload);
+      state.selectedModelCards.splice(removeAt, 1);
     },
   },
   extraReducers(builder) {
@@ -63,6 +77,7 @@ export const appSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { selectFaction, addGuildhallCard, removeGuildhallCard } = appSlice.actions;
+export const { selectFaction, addGuildhallCard, removeGuildhallCard, selectModelCard, removeModelCard } =
+  appSlice.actions;
 
 export default appSlice.reducer;

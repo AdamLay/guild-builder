@@ -1,4 +1,5 @@
 export default interface ModelCard {
+  selectionId?: string;
   id: number;
   factionId: number;
   name: string;

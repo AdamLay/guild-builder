@@ -2,7 +2,8 @@ import type { NextPage } from "next";
 import { useEffect } from "react";
 import FactionSelection from "../components/factionSelection";
 import Guildhall from "../components/guildhall";
-import { getFactions } from "../data/appSlice";
+import ModelCards from "../components/modelCards";
+import { getFactions, getModelCards } from "../data/appSlice";
 import { useAppDispatch } from "../data/store";
 
 const Home: NextPage = () => {
@@ -10,12 +11,17 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     dispatch(getFactions());
+    dispatch(getModelCards(null as any));
   }, []);
 
   return (
     <>
       <main className="container mt-6">
         <Guildhall />
+
+        <hr />
+
+        <ModelCards />
 
         {/* <FactionSelection /> */}
       </main>
