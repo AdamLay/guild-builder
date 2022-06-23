@@ -1,11 +1,13 @@
-import { Box, Grid, List, ListItemButton, ListItemText, Modal, Paper } from "@mui/material";
+import { Box, Grid, IconButton, List, ListItemButton, ListItemText, Modal, Paper } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { addGuildhallCard } from "../data/appSlice";
+import { addGuildhallCard, removeGuildhallCard } from "../data/appSlice";
 import { GuildhallCard, GuildhallCards, GuildhallCardType } from "../data/models/guildhall";
 import { RootState, useAppDispatch } from "../data/store";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Guildhall() {
+  const dispatch = useAppDispatch();
   const guildhall = useSelector((state: RootState) => state.app.guildhall);
   const [selectionOpen, setSelectionOpen] = useState(false);
   return (
@@ -14,12 +16,19 @@ export default function Guildhall() {
         Guildhall
       </h1>
       <Grid container spacing={2}>
-        {guildhall.map((card, index) => (
-          <Grid key={index} item xs={6}>
+        {guildhall.map((card) => (
+          <Grid key={card.selectionId} item xs={6}>
             <Paper className="p-4">
-              <p className="title-font" style={{ fontSize: "1.5rem" }}>
-                {card.name}
-              </p>
+              <div className="is-flex">
+                <p className="title-font" style={{ fontSize: "1.5rem", flex: 1 }}>
+                  {card.name}
+                </p>
+                {card.type !== GuildhallCardType.GreatHall && (
+                  <IconButton onClick={() => dispatch(removeGuildhallCard(card.selectionId as string))}>
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+              </div>
               <hr />
               <pre>{card.text}</pre>
             </Paper>
@@ -64,14 +73,16 @@ function GuildhallCardSelectionModal(props: GuildhallCardSelectionModalProps) {
       <Box sx={style}>
         <Paper>
           <List>
-            {Object.values(GuildhallCards).map((x: any) => {
-              const card = x as GuildhallCard;
-              return (
-                <ListItemButton key={x.type} onClick={() => selectCard(card)}>
-                  <ListItemText primary={card.name} secondary={card.text} />
-                </ListItemButton>
-              );
-            })}
+            {Object.values(GuildhallCards)
+              .filter((x) => x.type !== GuildhallCardType.GreatHall)
+              .map((x: any) => {
+                const card = x as GuildhallCard;
+                return (
+                  <ListItemButton key={x.type} onClick={() => selectCard(card)}>
+                    <ListItemText primary={card.name} secondary={card.text} />
+                  </ListItemButton>
+                );
+              })}
           </List>
         </Paper>
       </Box>

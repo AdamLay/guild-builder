@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { nanoid } from "nanoid";
 import ApiService from "../services/ApiService";
 import Faction from "./models/faction";
 import { GuildhallCard, GuildhallCards, GuildhallCardType } from "./models/guildhall";
@@ -40,7 +41,11 @@ export const appSlice = createSlice({
       state.activeFactions.push(action.payload);
     },
     addGuildhallCard(state, action: PayloadAction<GuildhallCard>) {
-      state.guildhall.push(action.payload);
+      state.guildhall.push({ ...action.payload, selectionId: nanoid() });
+    },
+    removeGuildhallCard(state, action: PayloadAction<string>) {
+      const removeAt = state.guildhall.findIndex((x) => x.selectionId === action.payload);
+      state.guildhall.splice(removeAt, 1);
     },
   },
   extraReducers(builder) {
@@ -58,6 +63,6 @@ export const appSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { selectFaction, addGuildhallCard } = appSlice.actions;
+export const { selectFaction, addGuildhallCard, removeGuildhallCard } = appSlice.actions;
 
 export default appSlice.reducer;

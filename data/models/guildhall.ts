@@ -1,6 +1,7 @@
 import { ArcanistSchool } from "./spells";
 
 export interface GuildhallCard {
+  selectionId?: string;
   type: GuildhallCardType;
   name: string;
   text: string;
