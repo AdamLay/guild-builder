@@ -1,5 +1,6 @@
 import Faction from "../data/models/faction";
 import ModelCard from "../data/models/modelCard";
+import { Spell } from "../data/models/spells";
 
 export default class ApiService {
   private static baseUrl() {
@@ -14,6 +15,12 @@ export default class ApiService {
     } catch {
       return factions;
     }
+  }
+
+  public static async getSpells() {
+    const res = await fetch(this.baseUrl() + "/spells");
+    const data = await res.json();
+    return data as Spell[];
   }
 
   public static async getModelCards(factionId: number) {

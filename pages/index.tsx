@@ -1,12 +1,10 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect } from "react";
-import FactionSelection from "../components/factionSelection";
 import Guildhall from "../components/guildhall";
 import ModelCards from "../components/modelCards";
 import { getFactions, getModelCards } from "../data/appSlice";
 import { useAppDispatch } from "../data/store";
-import BackIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArticleIcon from "@mui/icons-material/Article";
 
 const Home: NextPage = () => {
@@ -33,8 +31,8 @@ const Home: NextPage = () => {
         >
           <BackIcon />
         </IconButton> */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Guild Builder!
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} className="title-font">
+            Guildhall
           </Typography>
           <Button
             variant="outlined"

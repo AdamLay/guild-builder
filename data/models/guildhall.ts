@@ -1,4 +1,4 @@
-import { ArcanistSchool } from "./spells";
+import { SpellSchool } from "./spells";
 
 export interface GuildhallCard {
   selectionId?: string;
@@ -12,7 +12,7 @@ export interface GuildhallEffect {
   type: GuildhallEffectType;
   modifier?: number;
   keyword?: string;
-  school?: ArcanistSchool;
+  school?: SpellSchool;
 }
 
 export enum GuildhallEffectType {
@@ -82,7 +82,7 @@ export const GuildhallCards = {
     name: "Elemental Arcanum",
     text: "Your Arcanists proficients in this school can cast any spell from its list",
     effects: [
-      { type: GuildhallEffectType.Spell, school: ArcanistSchool.Elemental },
+      { type: GuildhallEffectType.Spell, school: SpellSchool.Elemental },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.DruidcraftArcanum]: {
@@ -90,7 +90,7 @@ export const GuildhallCards = {
     name: "Druidcraft Arcanum",
     text: "Your Arcanists proficients in this school can cast any spell from its list",
     effects: [
-      { type: GuildhallEffectType.Spell, school: ArcanistSchool.Druidcraft },
+      { type: GuildhallEffectType.Spell, school: SpellSchool.Druidcraft },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.AnimancyArcanum]: {
@@ -98,7 +98,7 @@ export const GuildhallCards = {
     name: "Animancy Arcanum",
     text: "Your Arcanists proficients in this school can cast any spell from its list",
     effects: [
-      { type: GuildhallEffectType.Spell, school: ArcanistSchool.Animacy },
+      { type: GuildhallEffectType.Spell, school: SpellSchool.Animacy },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.NecromancyArcanum]: {
@@ -106,17 +106,21 @@ export const GuildhallCards = {
     name: "Necromancy Arcanum",
     text: "Your Arcanists proficients in this school can cast any spell from its list",
     effects: [
-      { type: GuildhallEffectType.Spell, school: ArcanistSchool.Necromancy },
+      { type: GuildhallEffectType.Spell, school: SpellSchool.Necromancy },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.DiplomaticDeal]: {
     type: GuildhallCardType.DiplomaticDeal,
     name: "Diplomatic Deal",
     text: "+1 Hero from an adjacent Force.\nFrom now on your Guildhall cards who provide Guild Members let you choose model Cards from this faction as long as you have one Hero belonging to it.",
+    effects: [
+      { type: GuildhallEffectType.Slot, modifier: 1, keyword: "Hero" },
+    ] as GuildhallEffect[]
   },
   [GuildhallCardType.ArcaneForge]: {
     type: GuildhallCardType.ArcaneForge,
     name: "Arcane Forge (Unique)",
     text: "Equip your Heroic models with Artifacts cards. (Artifacts cards coming soon)",
+    effects: []
   },
 };

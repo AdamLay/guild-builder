@@ -27,7 +27,8 @@ export enum Element {
   Poison,
   Thunder,
   AquaticTerrain,
-  Frost
+  Frost,
+  Energy
 }
 
 export enum ElementEffect {

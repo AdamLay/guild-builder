@@ -4,11 +4,12 @@ import ApiService from "../services/ApiService";
 import Faction from "./models/faction";
 import { GuildhallCard, GuildhallCards, GuildhallCardType } from "./models/guildhall";
 import ModelCard from "./models/modelCard";
+import { Spell } from "./models/spells";
 
 export interface AppState {
   factions: Faction[];
-  loadingFactions: boolean;
   activeFactions: Faction[];
+  spells: Spell[];
   modelCards: ModelCard[];
   guildhall: GuildhallCard[];
   selectedModelCards: ModelCard[];
@@ -16,8 +17,8 @@ export interface AppState {
 
 const initialState: AppState = {
   factions: [],
-  loadingFactions: true,
   activeFactions: [],
+  spells: [],
   modelCards: [],
   guildhall: [{ ...GuildhallCards[GuildhallCardType.GreatHall], selectionId: nanoid() }],
   selectedModelCards: [],
@@ -27,6 +28,12 @@ export const getFactions = createAsyncThunk("app/getFactions", async () => {
   const factions = await ApiService.getFactions();
   console.log("Loaded factions", factions);
   return factions;
+});
+
+export const getSpells = createAsyncThunk("app/getSpells", async () => {
+  const spells = await ApiService.getSpells();
+  console.log("Loaded factions", spells);
+  return spells;
 });
 
 export const getModelCards = createAsyncThunk("app/getModelCards", async (factionId: number) => {
@@ -63,13 +70,12 @@ export const appSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(getFactions.pending, (state) => {
-      return { ...state, loadingFactions: true };
-    });
     builder.addCase(getFactions.fulfilled, (state, action: PayloadAction<Faction[]>) => {
-      return { ...state, loadingFactions: false, factions: action.payload };
+      return { ...state, factions: action.payload };
     });
-
+    builder.addCase(getSpells.fulfilled, (state, action: PayloadAction<Spell[]>) => {
+      return { ...state, spells: action.payload };
+    });
     builder.addCase(getModelCards.fulfilled, (state, action: PayloadAction<ModelCard[]>) => {
       state.modelCards.push(...action.payload);
     });
