@@ -27,28 +27,37 @@ export function ModelCardTile({ faction, modelCard }: ModelCardTileProps) {
           {unit.keywords.join(", ")}
         </p>
       </div>
-      <Grid container sx={{ fontWeight: 600, textAlign: "center" }} className="p-2">
-        <Grid item xs={3}>
+      <div
+        className="is-flex p-2"
+        style={{ fontWeight: 600, textAlign: "center", justifyContent: "space-evenly" }}
+      >
+        {unit.heroicWounds ? (
+          <div>
+            <p>HW</p>
+            <p>{unit.heroicWounds}</p>
+          </div>
+        ) : null}
+        <div>
           <p>Might</p>
           <p>{unit.might}</p>
-        </Grid>
-        <Grid item xs={3}>
+        </div>
+        <div>
           <p>Dex</p>
           <p>
             {unit.dex} {unit.ignoreDifficultTerrain && "(M)"} {unit.levitating && "(L)"}
           </p>
-        </Grid>
-        <Grid item xs={3}>
+        </div>
+        <div>
           <p>Def</p>
           <p>
             {unit.def} {unit.shield && "(S)"}
           </p>
-        </Grid>
-        <Grid item xs={3}>
+        </div>
+        <div>
           <p>Dex</p>
           <p>{unit.will}</p>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <Divider />
       <Table>
         {unit.attacks.map((attack) => (
