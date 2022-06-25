@@ -20,7 +20,8 @@ export function ModelCardTile({ faction, modelCard }: ModelCardTileProps) {
         }}
       >
         <p className="title-font" style={{ fontSize: "1.05rem" }}>
-          {unit.name} {unit.unitNumber > 1 ? `(${unit.unitNumber})` : null}
+          {unit.name} {unit.unitNumber > 1 ? `(${unit.unitNumber})` : null}{" "}
+          {unit.slots > 1 ? `(${"*".repeat(unit.slots)})` : ""}
         </p>
         <p style={{ opacity: 0.8, fontSize: "0.9rem", fontWeight: 600, fontStyle: "italic" }}>
           {unit.keywords.join(", ")}
