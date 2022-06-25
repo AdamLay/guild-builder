@@ -71,13 +71,13 @@ export const appSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(getFactions.fulfilled, (state, action: PayloadAction<Faction[]>) => {
-      return { ...state, factions: action.payload };
+      state.factions = action.payload;
     });
     builder.addCase(getSpells.fulfilled, (state, action: PayloadAction<Spell[]>) => {
-      return { ...state, spells: action.payload };
+      state.spells = action.payload;
     });
     builder.addCase(getModelCards.fulfilled, (state, action: PayloadAction<ModelCard[]>) => {
-      state.modelCards.push(...action.payload);
+      state.modelCards = action.payload;
     });
   },
 });
