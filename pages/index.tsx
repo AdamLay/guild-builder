@@ -1,3 +1,4 @@
+import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import FactionSelection from "../components/factionSelection";
@@ -5,6 +6,8 @@ import Guildhall from "../components/guildhall";
 import ModelCards from "../components/modelCards";
 import { getFactions, getModelCards } from "../data/appSlice";
 import { useAppDispatch } from "../data/store";
+import BackIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArticleIcon from "@mui/icons-material/Article";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -14,8 +17,35 @@ const Home: NextPage = () => {
     dispatch(getModelCards(null as any));
   }, []);
 
+  const rulesUrl = "https://olivier-mauras.gitlab.io/guilds/";
+
   return (
     <>
+      <AppBar position="static" elevation={0}>
+        <Toolbar>
+          {/* <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2 }}
+          onClick={props.onBackClick}
+        >
+          <BackIcon />
+        </IconButton> */}
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Guild Builder!
+          </Typography>
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={() => window.open(rulesUrl, "_blank")}
+            startIcon={<ArticleIcon />}
+          >
+            View Rules
+          </Button>
+        </Toolbar>
+      </AppBar>
       <main className="container mt-6">
         <Guildhall />
 
