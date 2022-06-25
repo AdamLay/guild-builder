@@ -83,7 +83,7 @@ function Slot(props: SlotProps) {
       {props.selectedCards.map((modelCard) => (
         <ModelCardTile
           key={modelCard.selectionId}
-          faction={factions.find(x => x.id === modelCard.factionId)}
+          faction={factions.find(x => x.id === modelCard.factionId) as Faction}
           modelCard={modelCard}
         />
       ))}
