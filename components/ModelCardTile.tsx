@@ -78,6 +78,21 @@ export function ModelCardTile({ faction, modelCard }: ModelCardTileProps) {
           </TableRow>
         ))}
       </Table>
+      {unit.abilities.length > 0 &&
+        unit.abilities.map((ability) => (
+          <>
+            <div className="p-2 has-text-centered">
+              <p style={{ fontWeight: 600 }}>
+                {ability.name}
+                {ability.passive ? " (P)" : ""}
+                {ability.torment ? " (T)" : ""}
+                {ability.fatigue ? " (F)" : ""}
+                </p>
+              <p>{ability.text}</p>
+            </div>
+            <Divider />
+          </>
+        ))}
       {unit.rw.length > 0 && (
         <div className="p-2">
           <span style={{ fontWeight: 600 }}>R/W: </span>
