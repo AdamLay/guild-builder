@@ -3,7 +3,7 @@ import ModelCard from "../data/models/modelCard";
 
 export default class ApiService {
   private static baseUrl() {
-    return "http://localhost:5041/api";
+    return "https://guilds-manager-ag.herokuapp.com/api";
   }
 
   public static async getFactions() {
@@ -21,6 +21,7 @@ export default class ApiService {
       cards.map((x: any) => ({
         ...x,
         keywords: x.keywords.split(",").map((word: string) => word.trim()),
+        rw: x.rw.split(",").map((word: string) => word.trim()),
       })) as ModelCard[];
     try {
       const res = await fetch(this.baseUrl() + "/model-cards" + (factionId ? "?factionId=" + factionId : ""));

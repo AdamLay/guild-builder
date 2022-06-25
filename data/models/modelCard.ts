@@ -1,3 +1,5 @@
+import { Element } from "./enums";
+
 export default interface ModelCard {
   selectionId?: string;
   id: number;
@@ -19,7 +21,32 @@ export default interface ModelCard {
 
   will: number;
 
-  abilities: any[];
-  attacks: any[];
-  resistancesWeaknesses: any[];
+  heroicWounds?: number;
+
+  rw: string[];
+
+  abilities: Ability[];
+  attacks: Attack[];
+}
+
+export interface Attack {
+  id: number;
+  cardId: number;
+  name: string;
+  attacks: number;
+  aoE: boolean;
+  minRange?: number;
+  range: number;
+  arc?: number;
+  element?: Element;
+}
+
+export interface Ability {
+  id: number;
+  cardId: number;
+  name: string;
+  text: string;
+  passive: boolean;
+  fatigue: boolean;
+  torment: boolean;
 }
