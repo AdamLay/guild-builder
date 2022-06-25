@@ -81,6 +81,7 @@ function Slot(props: SlotProps) {
       </Button>
       {props.selectedCards.map((modelCard) => (
         <ModelCardTile
+          key={modelCard.selectionId}
           faction={{ id: 1, name: "Dragonguard", force: Force.Fortitude }}
           modelCard={modelCard}
         />
@@ -153,7 +154,7 @@ function ModelCardTile({ faction, modelCard }: ModelCardProps) {
               {attack.arc && <p>{attack.arc}&deg;</p>}
               <p style={{ whiteSpace: "nowrap" }}>
                 {attack.minRange !== null && attack.minRange + "-"}
-                {attack.range}"
+                {attack.range}&quot;
               </p>
             </TableCell>
           </TableRow>
