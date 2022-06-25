@@ -68,6 +68,7 @@ interface SlotProps {
 }
 
 function Slot(props: SlotProps) {
+  const factions = useSelector((state: RootState) => state.app.factions);
   const [selectionOpen, setSelectionOpen] = useState(false);
   return (
     <>
@@ -82,7 +83,7 @@ function Slot(props: SlotProps) {
       {props.selectedCards.map((modelCard) => (
         <ModelCardTile
           key={modelCard.selectionId}
-          faction={{ id: 1, name: "Dragonguard", force: Force.Fortitude }}
+          faction={factions.find(x => x.id === modelCard.factionId)}
           modelCard={modelCard}
         />
       ))}
