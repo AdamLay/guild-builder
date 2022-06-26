@@ -7,6 +7,7 @@ import ModelCard from "./models/modelCard";
 import { Spell } from "./models/spells";
 
 export interface AppState {
+  loading: boolean;
   factions: Faction[];
   activeFactions: Faction[];
   spells: Spell[];
@@ -16,6 +17,7 @@ export interface AppState {
 }
 
 const initialState: AppState = {
+  loading: true,
   factions: [],
   activeFactions: [],
   spells: [],
@@ -59,6 +61,18 @@ export const appSlice = createSlice({
     },
 
     selectModelCard(state, action: PayloadAction<ModelCard>) {
+      const modelCard = action.payload;
+      const isHero = modelCard.keywords.some(x => x === "Hero");
+
+      if (isHero) {
+        // Load the faction if not loaded
+        const isFactionLoaded = state.activeFactions.some(x => x.id === modelCard.factionId);
+        if (!isFactionLoaded) {
+          const faction = state.factions.find(x => x.id === modelCard.factionId) as Faction;
+          state.activeFactions.push(faction);
+        }
+      }
+
       state.selectedModelCards.push({
         ...action.payload,
         selectionId: nanoid(),
@@ -72,15 +86,22 @@ export const appSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(getFactions.fulfilled, (state, action: PayloadAction<Faction[]>) => {
       state.factions = action.payload;
+      state.loading = isLoading(state);
     });
     builder.addCase(getSpells.fulfilled, (state, action: PayloadAction<Spell[]>) => {
       state.spells = action.payload;
+      state.loading = isLoading(state);
     });
     builder.addCase(getModelCards.fulfilled, (state, action: PayloadAction<ModelCard[]>) => {
       state.modelCards = action.payload;
+      state.loading = isLoading(state);
     });
   },
 });
+
+const isLoading = (state: AppState) => {
+  return !state.modelCards.length || !state.factions.length || !state.spells.length;
+}
 
 // Action creators are generated for each case reducer function
 export const { selectFaction, addGuildhallCard, removeGuildhallCard, selectModelCard, removeModelCard } =

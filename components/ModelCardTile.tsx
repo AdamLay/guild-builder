@@ -1,4 +1,5 @@
-import { Divider, Grid, Paper, Table, TableCell, TableRow } from "@mui/material";
+import { Divider, Paper, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Fragment } from "react";
 import { Element, ForceColour, ForceForegroundColour } from "../data/models/enums";
 import Faction from "../data/models/faction";
 import ModelCard from "../data/models/modelCard";
@@ -60,38 +61,40 @@ export function ModelCardTile({ faction, modelCard }: ModelCardTileProps) {
       </div>
       <Divider />
       <Table>
-        {unit.attacks.map((attack) => (
-          <TableRow key={attack.id}>
-            <TableCell>{attack.name}</TableCell>
-            <TableCell style={{ fontWeight: 600 }}>
-              {attack.attacks} {attack.aoE && " AoE "}
-              ATK
-              {attack.element && ` (${Element[attack.element]})`}
-            </TableCell>
-            <TableCell>
-              {attack.arc && <p>{attack.arc}&deg;</p>}
-              <p style={{ whiteSpace: "nowrap" }}>
-                {attack.minRange !== null && attack.minRange + "-"}
-                {attack.range}&quot;
-              </p>
-            </TableCell>
-          </TableRow>
-        ))}
+        <TableBody>
+          {unit.attacks.map((attack) => (
+            <TableRow key={attack.id}>
+              <TableCell>{attack.name}</TableCell>
+              <TableCell style={{ fontWeight: 600 }}>
+                {attack.attacks} {attack.aoE && " AoE "}
+                ATK
+                {attack.element && ` (${Element[attack.element]})`}
+              </TableCell>
+              <TableCell>
+                {attack.arc && <p>{attack.arc}&deg;</p>}
+                <p style={{ whiteSpace: "nowrap" }}>
+                  {attack.minRange !== null && attack.minRange + "-"}
+                  {attack.range}&quot;
+                </p>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
       {unit.abilities.length > 0 &&
         unit.abilities.map((ability) => (
-          <>
+          <Fragment key={ability.id}>
             <div className="p-2 has-text-centered">
               <p style={{ fontWeight: 600 }}>
                 {ability.name}
                 {ability.passive ? " (P)" : ""}
                 {ability.torment ? " (T)" : ""}
                 {ability.fatigue ? " (F)" : ""}
-                </p>
+              </p>
               <p>{ability.text}</p>
             </div>
             <Divider />
-          </>
+          </Fragment>
         ))}
       {unit.rw.length > 0 && (
         <div className="p-2">

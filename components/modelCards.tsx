@@ -19,16 +19,6 @@ export default function ModelCards() {
   const guildhall = appState.guildhall;
   const modelCards = appState.modelCards;
 
-  const getAvailableSlots = (slotName: string) => {
-    return guildhall.reduce((slots, guildhallCard) => {
-      const slotEffects = guildhallCard.effects.filter(
-        (x) => x.type === GuildhallEffectType.Slot && x.keyword === slotName
-      );
-
-      return slots + _.sumBy(slotEffects, (x) => x.modifier || 0);
-    }, 0);
-  };
-
   const slotFilter = (slotName: string, modelCards: ModelCard[]) => {
     return modelCards.filter((modelCard) =>
       _.some(modelCard.keywords, (word) => word === slotName)
@@ -41,23 +31,25 @@ export default function ModelCards() {
     [] as GuildhallEffect[]
   );
 
-  // library: slotFilter(slot, modelCards)
+  const isHeroSelected = appState.activeFactions.length > 0;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       {groupMap(
         allSlotEffects,
         (x) => x.keyword as string,
-        (slot, key) => (
-          <Slot
-            slot={key}
-            factions={factions}
-            available={_.sumBy(slot, (x) => x.modifier as number)}
-            used={slotFilter(key, appState.selectedModelCards).length}
-            selectedCards={slotFilter(key, appState.selectedModelCards)}
-            library={slotFilter(key, modelCards)}
-          />
-        )
+        (slot, key) =>
+          (isHeroSelected || key === "Hero") && (
+            <Slot
+              key={key}
+              slot={key}
+              factions={factions}
+              available={_.sumBy(slot, (x) => x.modifier as number)}
+              used={slotFilter(key, appState.selectedModelCards).length}
+              selectedCards={slotFilter(key, appState.selectedModelCards)}
+              library={slotFilter(key, modelCards)}
+            />
+          )
       )}
     </Box>
   );
@@ -80,9 +72,11 @@ function Slot(props: SlotProps) {
         <h3 className="title-font is-size-4 is-flex-grow-1">
           {props.slot} {props.used}/{props.available}
         </h3>
-        <Button variant="contained" onClick={() => setSelectionOpen(true)}>
-          Add {props.slot}
-        </Button>
+        {props.used < props.available && (
+          <Button variant="contained" onClick={() => setSelectionOpen(true)}>
+            Add {props.slot}
+          </Button>
+        )}
       </div>
       <hr />
 

@@ -1,58 +1,31 @@
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import type { NextPage } from "next";
-import { useEffect } from "react";
 import Guildhall from "../components/guildhall";
 import ModelCards from "../components/modelCards";
-import { getFactions, getModelCards } from "../data/appSlice";
-import { useAppDispatch } from "../data/store";
-import ArticleIcon from "@mui/icons-material/Article";
+import { RootState, useAppDispatch } from "../data/store";
+import { useSelector } from "react-redux";
+import MainAppBar from "../components/MainAppBar";
+import { DataLoader } from "../components/DataLoader";
 
 const Home: NextPage = () => {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getFactions());
-    dispatch(getModelCards(null as any));
-  }, []);
-
-  const rulesUrl = "https://olivier-mauras.gitlab.io/guilds/";
+  const loading = useSelector((state: RootState) => state.app.loading);
 
   return (
     <>
-      <AppBar position="static" elevation={0}>
-        <Toolbar>
-          {/* <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-          onClick={props.onBackClick}
-        >
-          <BackIcon />
-        </IconButton> */}
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} className="title-font">
-            Guildhall
-          </Typography>
-          <Button
-            variant="outlined"
-            color="inherit"
-            onClick={() => window.open(rulesUrl, "_blank")}
-            startIcon={<ArticleIcon />}
-          >
-            View Rules
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <main className="container mt-6">
-        <Guildhall />
+      <MainAppBar title="Guildhall" />
+      {loading ? (
+        <DataLoader />
+      ) : (
+        <main className="container mt-6">
+          <Guildhall />
 
-        <hr />
+          <hr />
 
-        <ModelCards />
+          <ModelCards />
 
-        {/* <FactionSelection /> */}
-      </main>
+          {/* <FactionSelection /> */}
+        </main>
+      )}
 
       <footer>
         {/* <a
