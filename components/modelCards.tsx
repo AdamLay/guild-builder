@@ -66,6 +66,7 @@ interface SlotProps {
 
 function Slot(props: SlotProps) {
   const [selectionOpen, setSelectionOpen] = useState(false);
+  const router = useRouter();
   return (
     <>
       <div className="is-flex mt-6">
@@ -73,7 +74,15 @@ function Slot(props: SlotProps) {
           {props.slot} {props.used}/{props.available}
         </h3>
         {props.used < props.available && (
-          <Button variant="contained" onClick={() => setSelectionOpen(true)}>
+          <Button
+            variant="contained"
+            onClick={() =>
+              router.push({
+                pathname: "/library",
+                query: { selection: true, keywords: props.slot },
+              })
+            }
+          >
             Add {props.slot}
           </Button>
         )}

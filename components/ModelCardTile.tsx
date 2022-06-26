@@ -7,12 +7,18 @@ import ModelCard from "../data/models/modelCard";
 export interface ModelCardTileProps {
   faction: Faction;
   modelCard: ModelCard;
+  onClick?: ((modelCard: ModelCard) => any) | null;
 }
 
-export function ModelCardTile({ faction, modelCard }: ModelCardTileProps) {
+export function ModelCardTile({ faction, modelCard, onClick }: ModelCardTileProps) {
   const unit = modelCard;
   return (
-    <Paper>
+    <Paper
+      className={onClick ? "interactable" : ""}
+      onClick={() => {
+        onClick ? onClick(unit) : null;
+      }}
+    >
       <div
         className="px-2 py-2 has-text-centered"
         style={{
