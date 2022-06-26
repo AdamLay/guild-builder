@@ -33,6 +33,7 @@ const Library: NextPage = () => {
     (state: RootState) => state.app
   );
   const selectionMode = !!router.query["selection"];
+  const slotBudget = parseInt(router.query["budget"] as any);
 
   return (
     <>
@@ -50,6 +51,7 @@ const Library: NextPage = () => {
                   selectionMode={selectionMode}
                   keywords={[router.query["keywords"]] as any}
                   guildhall={guildhall}
+                  slotBudget={slotBudget}
                 />
               ))
             : groupMap(
@@ -69,6 +71,7 @@ const Library: NextPage = () => {
                           selectionMode={selectionMode}
                           keywords={[router.query["keywords"]] as any}
                           guildhall={guildhall}
+                          slotBudget={slotBudget}
                         />
                       ))}
                     </AccordionDetails>
@@ -148,6 +151,7 @@ interface FactionGroupProps {
   library: ModelCard[];
   faction: Faction;
   guildhall: GuildhallCard[];
+  slotBudget: number;
 }
 
 function FactionGroup(props: FactionGroupProps) {
@@ -174,6 +178,7 @@ function FactionGroup(props: FactionGroupProps) {
                 )
             )
             .filter((x) => allowLegendary || !x.keywords.includes("Legendary Hero"))
+            .filter((x) => x.slots <= props.slotBudget)
             .map((modelCard) => (
               <Grid key={modelCard.id} item sm={4}>
                 <ModelCardTile

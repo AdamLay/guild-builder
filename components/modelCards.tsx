@@ -77,7 +77,6 @@ interface SlotProps {
 }
 
 function Slot(props: SlotProps) {
-  const [selectionOpen, setSelectionOpen] = useState(false);
   const router = useRouter();
   return (
     <>
@@ -91,7 +90,11 @@ function Slot(props: SlotProps) {
             onClick={() =>
               router.push({
                 pathname: "/library",
-                query: { selection: true, keywords: props.slot },
+                query: {
+                  selection: true,
+                  keywords: props.slot,
+                  budget: props.available - props.used,
+                },
               })
             }
           >
@@ -111,11 +114,6 @@ function Slot(props: SlotProps) {
           </Grid>
         ))}
       </Grid>
-      <ModelCardSelectionModal
-        open={selectionOpen}
-        onClose={() => setSelectionOpen(false)}
-        library={props.library}
-      />
     </>
   );
 }
