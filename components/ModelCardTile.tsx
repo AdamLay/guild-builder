@@ -46,7 +46,7 @@ export function ModelCardTile({ faction, modelCard, onClick }: ModelCardTileProp
         ) : null}
         <div>
           <p>Might</p>
-          <p>{unit.might}</p>
+          <p>{unit.might} {unit.healing && "(R)"}</p>
         </div>
         <div>
           <p>Dex</p>
@@ -74,7 +74,7 @@ export function ModelCardTile({ faction, modelCard, onClick }: ModelCardTileProp
               <TableCell style={{ fontWeight: 600 }}>
                 {attack.attacks} {attack.aoE && " AoE "}
                 ATK
-                {attack.element && ` (${Element[attack.element]})`}
+                {attack.element !== null && ` (${Element[attack.element as any]})`}
               </TableCell>
               <TableCell>
                 {attack.arc && <p>{attack.arc}&deg;</p>}

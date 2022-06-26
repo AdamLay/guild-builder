@@ -28,7 +28,7 @@ export default class ApiService {
       cards.map((x: any) => ({
         ...x,
         keywords: x.keywords.split(",").map((word: string) => word.trim()),
-        rw: x.rw.split(",").map((word: string) => word.trim()),
+        rw: x.rw.length > 1 ? x.rw.split(",").map((word: string) => word.trim()) : null,
       })) as ModelCard[];
     try {
       const res = await fetch(this.baseUrl() + "/model-cards" + (factionId ? "?factionId=" + factionId : ""));

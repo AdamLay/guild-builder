@@ -177,8 +177,8 @@ function FactionGroup(props: FactionGroupProps) {
                   props.keywords.some((pk) => cardKeyword.split(" ").includes(pk))
                 )
             )
-            .filter((x) => allowLegendary || !x.keywords.includes("Legendary Hero"))
-            .filter((x) => x.slots <= props.slotBudget)
+            .filter((x) => !props.selectionMode || allowLegendary || !x.keywords.includes("Legendary Hero"))
+            .filter((x) => !props.selectionMode || x.slots <= props.slotBudget)
             .map((modelCard) => (
               <Grid key={modelCard.id} item sm={4}>
                 <ModelCardTile
