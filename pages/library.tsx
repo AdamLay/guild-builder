@@ -17,7 +17,7 @@ import { ModelCardTile } from "../components/ModelCardTile";
 import { useSelector } from "react-redux";
 import { groupMap } from "../helpers";
 import { SpellSchool, Stat } from "../data/models/spells";
-import { Force } from "../data/models/enums";
+import { Force, ForceColour } from "../data/models/enums";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MainAppBar from "../components/MainAppBar";
 import { DataLoader } from "../components/DataLoader";
@@ -60,7 +60,18 @@ const Library: NextPage = () => {
                 (group, key) => (
                   <Accordion key={key} defaultExpanded={selectionMode}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <h2 className="title-font is-size-3 is-flex-grow-1">{Force[key as any]}</h2>
+                      <div className="is-flex" style={{ alignItems: "center" }}>
+                        <div
+                          className="mr-4"
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "100px",
+                            backgroundColor: ForceColour[key as any] as string,
+                          }}
+                        ></div>
+                        <h2 className="title-font is-size-3 is-flex-grow-1">{Force[key as any]}</h2>
+                      </div>
                     </AccordionSummary>
                     <AccordionDetails>
                       {group.map((faction) => (
@@ -177,7 +188,10 @@ function FactionGroup(props: FactionGroupProps) {
                   props.keywords.some((pk) => cardKeyword.split(" ").includes(pk))
                 )
             )
-            .filter((x) => !props.selectionMode || allowLegendary || !x.keywords.includes("Legendary Hero"))
+            .filter(
+              (x) =>
+                !props.selectionMode || allowLegendary || !x.keywords.includes("Legendary Hero")
+            )
             .filter((x) => !props.selectionMode || x.slots <= props.slotBudget)
             .map((modelCard) => (
               <Grid key={modelCard.id} item sm={4}>
