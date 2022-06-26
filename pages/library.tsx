@@ -27,41 +27,50 @@ import { selectModelCard } from "../data/appSlice";
 const Library: NextPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const appState = useSelector((state: RootState) => state.app);
-  const factions = appState.factions;
-  const spells = appState.spells;
-  const modelCards = appState.modelCards;
+  const { factions, activeFactions, spells, modelCards, loading } = useSelector(
+    (state: RootState) => state.app
+  );
   const selectionMode = !!router.query["selection"];
 
   return (
     <>
       <MainAppBar title="Faction Card Library" />
-      {appState.loading ? (
+      {loading ? (
         <DataLoader />
       ) : (
         <main className="container mt-6">
-          {groupMap(
-            factions,
-            (x) => x.force.toString(),
-            (group, key) => (
-              <Accordion key={key} defaultExpanded={selectionMode}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <h2 className="title-font is-size-3 is-flex-grow-1">{Force[key as any]}</h2>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {group.map((faction) => (
-                    <FactionGroup
-                      key={faction.id}
-                      library={modelCards.filter((x) => x.factionId === faction.id)}
-                      faction={faction}
-                      selectionMode={selectionMode}
-                      keywords={[router.query["keywords"]] as any}
-                    />
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            )
-          )}
+          {activeFactions.length > 0
+            ? activeFactions.map((faction) => (
+                <FactionGroup
+                  key={faction.id}
+                  library={modelCards.filter((x) => x.factionId === faction.id)}
+                  faction={faction}
+                  selectionMode={selectionMode}
+                  keywords={[router.query["keywords"]] as any}
+                />
+              ))
+            : groupMap(
+                factions,
+                (x) => x.force.toString(),
+                (group, key) => (
+                  <Accordion key={key} defaultExpanded={selectionMode}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <h2 className="title-font is-size-3 is-flex-grow-1">{Force[key as any]}</h2>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      {group.map((faction) => (
+                        <FactionGroup
+                          key={faction.id}
+                          library={modelCards.filter((x) => x.factionId === faction.id)}
+                          faction={faction}
+                          selectionMode={selectionMode}
+                          keywords={[router.query["keywords"]] as any}
+                        />
+                      ))}
+                    </AccordionDetails>
+                  </Accordion>
+                )
+              )}
 
           {!selectionMode && (
             <>
