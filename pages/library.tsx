@@ -23,11 +23,13 @@ import MainAppBar from "../components/MainAppBar";
 import { DataLoader } from "../components/DataLoader";
 import { useRouter } from "next/router";
 import { selectModelCard } from "../data/appSlice";
+import { GuildhallCard } from "../data/models/guildhall";
+import Guildhall from "../components/guildhall";
 
 const Library: NextPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { factions, activeFactions, spells, modelCards, loading } = useSelector(
+  const { factions, activeFactions, spells, modelCards, loading, guildhall } = useSelector(
     (state: RootState) => state.app
   );
   const selectionMode = !!router.query["selection"];
@@ -47,6 +49,7 @@ const Library: NextPage = () => {
                   faction={faction}
                   selectionMode={selectionMode}
                   keywords={[router.query["keywords"]] as any}
+                  guildhall={guildhall}
                 />
               ))
             : groupMap(
@@ -65,6 +68,7 @@ const Library: NextPage = () => {
                           faction={faction}
                           selectionMode={selectionMode}
                           keywords={[router.query["keywords"]] as any}
+                          guildhall={guildhall}
                         />
                       ))}
                     </AccordionDetails>
@@ -143,6 +147,7 @@ interface FactionGroupProps {
   keywords: string[];
   library: ModelCard[];
   faction: Faction;
+  guildhall: GuildhallCard[];
 }
 
 function FactionGroup(props: FactionGroupProps) {
@@ -152,6 +157,7 @@ function FactionGroup(props: FactionGroupProps) {
     dispatch(selectModelCard(modelCard));
     router.push("/");
   };
+  const allowLegendary = props.guildhall.length >= 8;
   return (
     <Accordion defaultExpanded={props.selectionMode}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -162,8 +168,12 @@ function FactionGroup(props: FactionGroupProps) {
           {props.library
             .filter(
               (x) =>
-                !props.selectionMode || x.keywords.some((word) => props.keywords.includes(word))
+                !props.selectionMode ||
+                x.keywords.some((cardKeyword) =>
+                  props.keywords.some((pk) => cardKeyword.split(" ").includes(pk))
+                )
             )
+            .filter((x) => allowLegendary || !x.keywords.includes("Legendary Hero"))
             .map((modelCard) => (
               <Grid key={modelCard.id} item sm={4}>
                 <ModelCardTile

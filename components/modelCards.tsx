@@ -21,7 +21,11 @@ export default function ModelCards() {
 
   const slotFilter = (slotName: string, modelCards: ModelCard[]) => {
     return modelCards.filter((modelCard) =>
-      _.some(modelCard.keywords, (word) => word === slotName)
+      _.some(
+        modelCard.keywords,
+        (cardKeyword) =>
+          cardKeyword === slotName || (cardKeyword === "Legendary Hero" && slotName === "Hero")
+      )
     );
   };
 
@@ -30,6 +34,14 @@ export default function ModelCards() {
       effects.concat(card.effects.filter((x) => x.type === GuildhallEffectType.Slot)),
     [] as GuildhallEffect[]
   );
+
+  // if (guildhall.length >= 8) {
+  //   allSlotEffects.push({
+  //     type: GuildhallEffectType.Slot,
+  //     modifier: 1,
+  //     keyword: "Legendary Hero"
+  //   })
+  // }
 
   const isHeroSelected = appState.activeFactions.length > 0;
 
@@ -45,7 +57,7 @@ export default function ModelCards() {
               slot={key}
               factions={factions}
               available={_.sumBy(slot, (x) => x.modifier as number)}
-              used={slotFilter(key, appState.selectedModelCards).length}
+              used={_.sumBy(slotFilter(key, appState.selectedModelCards), (x) => x.slots)}
               selectedCards={slotFilter(key, appState.selectedModelCards)}
               library={slotFilter(key, modelCards)}
             />
