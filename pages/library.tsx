@@ -15,7 +15,7 @@ import Faction from "../data/models/faction";
 import ModelCard from "../data/models/modelCard";
 import { ModelCardTile } from "../components/ModelCardTile";
 import { useSelector } from "react-redux";
-import { groupMap } from "../helpers";
+import { groupMap, slotFilter } from "../helpers";
 import { SpellSchool, Stat } from "../data/models/spells";
 import { Force, ForceColour } from "../data/models/enums";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -24,7 +24,6 @@ import { DataLoader } from "../components/DataLoader";
 import { useRouter } from "next/router";
 import { selectModelCard } from "../data/appSlice";
 import { GuildhallCard } from "../data/models/guildhall";
-import Guildhall from "../components/guildhall";
 
 const Library: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +33,8 @@ const Library: NextPage = () => {
   );
   const selectionMode = !!router.query["selection"];
   const slotBudget = parseInt(router.query["budget"] as any);
+  const queryKeywords = router.query["keywords"];
+  const keywords = Array.isArray(queryKeywords) ? queryKeywords : [queryKeywords as string];
 
   return (
     <>
@@ -49,7 +50,7 @@ const Library: NextPage = () => {
                   library={modelCards.filter((x) => x.factionId === faction.id)}
                   faction={faction}
                   selectionMode={selectionMode}
-                  keywords={[router.query["keywords"]] as any}
+                  keywords={keywords}
                   guildhall={guildhall}
                   slotBudget={slotBudget}
                 />
@@ -67,7 +68,7 @@ const Library: NextPage = () => {
                             width: "32px",
                             height: "32px",
                             borderRadius: "100px",
-                            backgroundColor: ForceColour[key as any] as string,
+                            backgroundColor: ForceColour[key] as string,
                           }}
                         ></div>
                         <h2 className="title-font is-size-3 is-flex-grow-1">{Force[key as any]}</h2>
@@ -173,6 +174,11 @@ function FactionGroup(props: FactionGroupProps) {
     router.push("/");
   };
   const allowLegendary = props.guildhall.length >= 8;
+  const displayLibrary = props.selectionMode
+    ? slotFilter(props.keywords, props.library)
+        .filter((x) => allowLegendary || !x.keywords.includes("Legendary Hero"))
+        .filter((x) => x.slots <= props.slotBudget)
+    : props.library;
   return (
     <Accordion defaultExpanded={props.selectionMode}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -180,28 +186,15 @@ function FactionGroup(props: FactionGroupProps) {
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={4}>
-          {props.library
-            .filter(
-              (x) =>
-                !props.selectionMode ||
-                x.keywords.some((cardKeyword) =>
-                  props.keywords.some((pk) => cardKeyword.split(" ").includes(pk))
-                )
-            )
-            .filter(
-              (x) =>
-                !props.selectionMode || allowLegendary || !x.keywords.includes("Legendary Hero")
-            )
-            .filter((x) => !props.selectionMode || x.slots <= props.slotBudget)
-            .map((modelCard) => (
-              <Grid key={modelCard.id} item sm={4}>
-                <ModelCardTile
-                  faction={props.faction}
-                  modelCard={modelCard}
-                  onClick={props.selectionMode ? onModelCardSelected : null}
-                />
-              </Grid>
-            ))}
+          {displayLibrary.map((modelCard) => (
+            <Grid key={modelCard.id} item sm={4}>
+              <ModelCardTile
+                faction={props.faction}
+                modelCard={modelCard}
+                onClick={props.selectionMode ? onModelCardSelected : null}
+              />
+            </Grid>
+          ))}
         </Grid>
       </AccordionDetails>
     </Accordion>

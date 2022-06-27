@@ -11,7 +11,7 @@ export interface GuildhallCard {
 export interface GuildhallEffect {
   type: GuildhallEffectType;
   modifier?: number;
-  keyword?: string;
+  keywords?: string[];
   school?: SpellSchool;
 }
 
@@ -41,8 +41,8 @@ export const GuildhallCards = {
     name: "Great Hall (Unique)",
     text: "+1 Guildhall Card\n+1 Hero Card Slot\n+2 Infantry Cards Slot",
     effects: [
-      { type: GuildhallEffectType.Slot, modifier: 1, keyword: "Hero" },
-      { type: GuildhallEffectType.Slot, modifier: 2, keyword: "Infantry" },
+      { type: GuildhallEffectType.Slot, modifier: 1, keywords: ["Hero"] },
+      { type: GuildhallEffectType.Slot, modifier: 2, keywords: ["Infantry"] },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.Garrison]: {
@@ -50,7 +50,7 @@ export const GuildhallCards = {
     name: "Garrison",
     text: "+2 Infantry Cards Slot",
     effects: [
-      { type: GuildhallEffectType.Slot, modifier: 2, keyword: "Infantry" },
+      { type: GuildhallEffectType.Slot, modifier: 2, keywords: ["Infantry"] },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.Stables]: {
@@ -58,7 +58,7 @@ export const GuildhallCards = {
     name: "Stables",
     text: "+2 Cavalry Cards Slot",
     effects: [
-      { type: GuildhallEffectType.Slot, modifier: 2, keyword: "Cavalry" },
+      { type: GuildhallEffectType.Slot, modifier: 2, keywords: ["Cavalry"] },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.HeroicInspiration]: {
@@ -66,7 +66,7 @@ export const GuildhallCards = {
     name: "Heroic Inspiration",
     text: "+1 Hero Card Slot",
     effects: [
-      { type: GuildhallEffectType.Slot, modifier: 1, keyword: "Hero" },
+      { type: GuildhallEffectType.Slot, modifier: 1, keywords: ["Hero"] },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.BeastLair]: {
@@ -74,7 +74,7 @@ export const GuildhallCards = {
     name: "Beast Lair",
     text: "+1 Heroic Mount Card Slot or +1 Heroic Beast card Slot",
     effects: [
-      { type: GuildhallEffectType.Slot, modifier: 1, keyword: "Heroic Mount|Heroic Beast" },
+      { type: GuildhallEffectType.Slot, modifier: 1, keywords: ["Heroic Mount","Heroic Beast"] },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.ElementalArcanum]: {
@@ -114,7 +114,7 @@ export const GuildhallCards = {
     name: "Diplomatic Deal",
     text: "+1 Hero from an adjacent Force.\nFrom now on your Guildhall cards who provide Guild Members let you choose model Cards from this faction as long as you have one Hero belonging to it.",
     effects: [
-      { type: GuildhallEffectType.Slot, modifier: 1, keyword: "Hero" },
+      { type: GuildhallEffectType.Slot, modifier: 1, keywords: ["Hero"] },
     ] as GuildhallEffect[]
   },
   [GuildhallCardType.ArcaneForge]: {
