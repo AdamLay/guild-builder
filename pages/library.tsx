@@ -68,7 +68,7 @@ const Library: NextPage = () => {
                             width: "32px",
                             height: "32px",
                             borderRadius: "100px",
-                            backgroundColor: ForceColour[key] as string,
+                            backgroundColor: (ForceColour as any)[key] as string,
                           }}
                         ></div>
                         <h2 className="title-font is-size-3 is-flex-grow-1">{Force[key as any]}</h2>
