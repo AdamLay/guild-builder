@@ -61,7 +61,7 @@ export function ModelCardTile({ faction, modelCard, onClick }: ModelCardTileProp
           </p>
         </div>
         <div>
-          <p>Dex</p>
+          <p>Will</p>
           <p>{unit.will}</p>
         </div>
       </div>
